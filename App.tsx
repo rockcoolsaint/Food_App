@@ -8,6 +8,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 import HomeScreen from './src/screens/HomeScreen';
 import LandingScreen from './src/screens/LandingScreen';
+import { Provider } from 'react-redux'
+import { store } from './src/redux/store';
 
 // const switchNavigator = createSwitchNavigator({
 //   landingStack: {
@@ -110,45 +112,45 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    // <LandingScreen/>
-    <NavigationContainer>
-      {/* <Stack.Screen name="Home" component={LandingScreen} /> */}
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="Welcome" component={LandingScreen} />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color}) => {
-              let icon = focused == true ? require('./src/images/home_icon.png') : require('./src/images/home_n_icon.png') 
-              return <Image source={icon} style={styles.tabIcon} />
-            }
-          }}
-          name="Home" component={HomeScreen} />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color}) => {
-              let icon = focused == true ? require('./src/images/offer_icon.png') : require('./src/images/offer_n_icon.png') 
-              return <Image source={icon} style={styles.tabIcon} />
-            }
-          }}
-          name="Offer" component={HomeScreen} />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color}) => {
-              let icon = focused == true ? require('./src/images/cart_icon.png') : require('./src/images/cart_n_icon.png') 
-              return <Image source={icon} style={styles.tabIcon} />
-            }
-          }}
-          name="Cart" component={HomeScreen} />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color}) => {
-              let icon = focused == true ? require('./src/images/account_icon.png') : require('./src/images/account_n_icon.png') 
-              return <Image source={icon} style={styles.tabIcon} />
-            }
-          }}
-          name="Account" component={HomeScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Screen name="Welcome" component={LandingScreen} />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused, color}) => {
+                let icon = focused == true ? require('./src/images/home_icon.png') : require('./src/images/home_n_icon.png') 
+                return <Image source={icon} style={styles.tabIcon} />
+              }
+            }}
+            name="Home" component={HomeScreen} />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused, color}) => {
+                let icon = focused == true ? require('./src/images/offer_icon.png') : require('./src/images/offer_n_icon.png') 
+                return <Image source={icon} style={styles.tabIcon} />
+              }
+            }}
+            name="Offer" component={HomeScreen} />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused, color}) => {
+                let icon = focused == true ? require('./src/images/cart_icon.png') : require('./src/images/cart_n_icon.png') 
+                return <Image source={icon} style={styles.tabIcon} />
+              }
+            }}
+            name="Cart" component={HomeScreen} />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused, color}) => {
+                let icon = focused == true ? require('./src/images/account_icon.png') : require('./src/images/account_n_icon.png') 
+                return <Image source={icon} style={styles.tabIcon} />
+              }
+            }}
+            name="Account" component={HomeScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

@@ -2,6 +2,10 @@ import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import * as Location from 'expo-location'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch, useSelector } from 'react-redux'
+import { onUpdateLocation } from '../redux/reducers/userSlice'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const screenWidth = Dimensions.get('screen').width
 
@@ -11,6 +15,9 @@ const LandingScreen = () => {
   const [address, setAddress] = useState<Location.LocationGeocodedAddress>()
 
   const [displayAddress, setDisplayAddress] = useState("Waiting for current Location")
+
+  // const userLocation = useSelector((state: any) => state.location);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -41,6 +48,23 @@ const LandingScreen = () => {
         
         console.log(addressResponse[0])
         setAddress(addressResponse[0]);
+        // save to local storage
+        try {
+            const locationString = JSON.stringify(addressResponse[0])
+            await AsyncStorage.setItem('user_location', locationString)
+            // save our location in local storage
+            // dispatch({
+            //     type: 'ON_UPDATE_LOCATION',
+            //     payload: location
+            // })
+            dispatch(onUpdateLocation({location: locationString}));
+
+        } catch (error) {
+            // dispatch({
+            //     type: 'ON_USER_ERROR',
+            //     payload: error
+            // })
+        }
         let currentAddress = `${addressResponse[0].city}, ${addressResponse[0].region}, ${addressResponse[0].postalCode}, ${addressResponse[0].country}`;
         setDisplayAddress(currentAddress);
         // console.log(addressResponse, 'nothing');
@@ -67,7 +91,7 @@ const LandingScreen = () => {
   },[])
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.navigation}><Text></Text></View>
       <View style={styles.body}>
         <Image source={require('../images/delivery_icon.png')} style={styles.deliveryIcon} />
@@ -80,7 +104,7 @@ const LandingScreen = () => {
       <View style={styles.footer}>
         <Text>Footer</Text>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
