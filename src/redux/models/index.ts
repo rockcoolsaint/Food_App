@@ -45,7 +45,7 @@ export interface UserModel{
     lastName: String;
     contactNumber: String;
     token: string,
-    varified: boolean
+    verified: boolean
 }
  
 export interface UserState{
